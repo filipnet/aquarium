@@ -11,6 +11,8 @@ Control of aquarium technology and sensors
 - Controls ESP8266 Chip Level Data Pins
 - Sends a heartbeat signal to the MQTT broker periodically
 - Switches a double relay (230V) for daylight and nightlight
+- Monitoring of room temperature, humidity and air pressure with GY-BME280 sensor
+- Monitoring water temperature DS18B20 Temperature sensor
 
 <!-- TOC -->
 
@@ -32,6 +34,7 @@ Control of aquarium technology and sensors
 - MQTT Broker such as the Mosquitto MQTT Broker (https://mosquitto.org/)
 - ControllApp such as MQTT Dash (https://play.google.com/store/apps/details?id=net.routix.mqttdash&hl=en)
 - 2-Relais Module 5V with Optokoppler low-level trigger compatible with Arduino
+- GY-BME280 sensor
 - DS18B20 Temperature sensor
 
 ### LIBRARIES
