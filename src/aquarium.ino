@@ -20,6 +20,8 @@ const char *mqttPassword = MQTT_PASSWORD;
 const char *mqttID = MQTT_ID;
 const int relayNightlight = RELAY_NIGHTLIGHT;
 const int relayDaylight = RELAY_DAYLIGHT;
+const int relayAirpump = RELAY_AIRPUMP;
+const int relayFilter = RELAY_FILTER;
 
 unsigned long sensor_previousMillis = 0;
 const long sensor_interval = SENSOR_INTERVALL;
@@ -43,10 +45,15 @@ void setup() {
   Serial.begin(115200);
   Serial.setDebugOutput(false);
   pinMode(LED_BUILTIN, OUTPUT);
+  // Turn off relay-ports on startup
   digitalWrite(relayNightlight, HIGH);
   pinMode(relayNightlight, OUTPUT);
   digitalWrite(relayDaylight, HIGH);
   pinMode(relayDaylight, OUTPUT);
+  digitalWrite(relayAirpump, HIGH);
+  pinMode(relayAirpump, OUTPUT);
+  digitalWrite(relayFilter, HIGH);
+  pinMode(relayFilter, OUTPUT);
   espClient.setInsecure();
   I2CAddressFinder();
   initializeBME280();
@@ -104,8 +111,11 @@ void reconnect() {
       if (client.connect(mqttID, mqttUser, mqttPassword)) {
         Serial.println("Connected to MQTT broker");
         Serial.println("Subscribe MQTT Topics");
+        // Subscribe the following mqtt topics
         client.subscribe("home/indoor/aquarium/daylight");
         client.subscribe("home/indoor/aquarium/nightlight");
+        client.subscribe("home/indoor/aquarium/airpump");
+        client.subscribe("home/indoor/aquarium/filter");
         Serial.println("");
         digitalWrite(LED_BUILTIN, HIGH); 
        } else {
@@ -299,6 +309,60 @@ void setRelayStatus(char* topic, byte* payload, unsigned int length) {
       Serial.print(" is ");
       Serial.println(pinStatus);
       client.publish("home/indoor/aquarium/daylight/response", "off");
+      delay(1000);
+    } else {
+      Serial.println("No valid mqtt command");
+    }
+  }
+
+  else if (mqttTopic == "home/indoor/aquarium/airpump")
+  {
+    if (mqttPayload == "on") {
+      Serial.println("Switch on aquarium airpump");
+      digitalWrite(relayAirpump, HIGH);
+      int pinStatus = digitalRead(relayAirpump);
+      Serial.print("Status of GPIO pin ");
+      Serial.print(relayAirpump);
+      Serial.print(" is ");
+      Serial.println(pinStatus);
+      client.publish("home/indoor/aquarium/airpump/response", "on");
+      delay(1000);
+    } else if (mqttPayload == "off") {
+      Serial.println("Switch off airpump");
+      digitalWrite(relayAirpump, LOW);
+      int pinStatus = digitalRead(relayAirpump);
+      Serial.print("Status of GPIO pin ");
+      Serial.print(relayAirpump);
+      Serial.print(" is ");
+      Serial.println(pinStatus);
+      client.publish("home/indoor/aquarium/airpump/response", "off");
+      delay(1000);
+    } else {
+      Serial.println("No valid mqtt command");
+    }
+  }
+
+  else if (mqttTopic == "home/indoor/aquarium/filter")
+  {
+    if (mqttPayload == "on") {
+      Serial.println("Switch on aquarium filter");
+      digitalWrite(relayFilter, HIGH);
+      int pinStatus = digitalRead(relayFilter);
+      Serial.print("Status of GPIO pin ");
+      Serial.print(relayFilter);
+      Serial.print(" is ");
+      Serial.println(pinStatus);
+      client.publish("home/indoor/aquarium/filter/response", "on");
+      delay(1000);
+    } else if (mqttPayload == "off") {
+      Serial.println("Switch off filter");
+      digitalWrite(relayFilter, LOW);
+      int pinStatus = digitalRead(relayFilter);
+      Serial.print("Status of GPIO pin ");
+      Serial.print(relayFilter);
+      Serial.print(" is ");
+      Serial.println(pinStatus);
+      client.publish("home/indoor/aquarium/filter/response", "off");
       delay(1000);
     } else {
       Serial.println("No valid mqtt command");
