@@ -7,7 +7,6 @@
 #include <Adafruit_BME280.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#include "heartbeat.h"
 #include "credentials.h"
 #include "config.h"
 
@@ -26,8 +25,8 @@ const int relayFilter = RELAY_FILTER;
 
 unsigned long sensor_previousMillis = 0;
 const long sensor_interval = SENSOR_INTERVALL;
-// unsigned long heartbeat_previousMillis = 0;
-// const long heartbeat_interval = HEARTBEAT_INTERVALL;
+unsigned long heartbeat_previousMillis = 0;
+const long heartbeat_interval = HEARTBEAT_INTERVALL;
 float temperature_local;
 float humidity_local;
 float pressure_local;
@@ -288,7 +287,6 @@ void mqttsend(const char *_topic, const char *_data)
   client.publish(_topic, _data);
 }
 
-/* 
 void heartbeat()
 {
   unsigned long heartbeat_currentMillis = millis();
@@ -300,7 +298,6 @@ void heartbeat()
     client.publish("home/indoor/aquarium/heartbeat", "on");
   }
 }
-*/
 
 void I2CAddressFinder()
 {
