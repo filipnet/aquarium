@@ -327,7 +327,7 @@ void I2CAddressFinder()
   Serial.println("");
 }
 
-void initializeBME280()
+void initialize_bme280()
 {
   Serial.print("Initialize BME280 module: ");
   if (!bme.begin(I2C_ADDRESS_BME280))
@@ -419,7 +419,7 @@ void setup()
   pinMode(relayFilter, OUTPUT);
   espClient.setInsecure();
   I2CAddressFinder();
-  initializeBME280();
+  initialize_bme280();
   sensors.begin(); // DS18B20
   reconnect();
 }
