@@ -42,17 +42,10 @@ Adafruit_BME280 bme;                                 // Declaration of BME280 se
 WiFiClientSecure espClient;
 PubSubClient client(espClient);
 
-const int relayNightlight = RELAY_NIGHTLIGHT;
-const int relayDaylight = RELAY_DAYLIGHT;
-const int relayAirpump = RELAY_AIRPUMP;
-const int relayFilter = RELAY_FILTER;
-
-Relay Daylight(relayNightlight, "home/aquarium/daylight");
-Relay Daylight(RELAY_NIGHTLIGHT,"home/aquarium/nightlight");
-Relay Airpump(RELAY_AIRPUMP,"home/aquarium/airpump");
-Relay Daylight(RELAY_DAYLIGHT,"home/aquarium/filter");
-
-
+Relay Daylight("Aquarium Daylight", relayDaylight, "home/indoor/aquarium/daylight");
+//Relay Daylight("relayDaylight","home/aquarium/nightlight");
+//Relay Airpump(RELAY_AIRPUMP,"home/aquarium/airpump");
+//Relay Daylight(RELAY_DAYLIGHT,"home/aquarium/filter");
 
 void setRelayStatus(char *topic, byte *payload, unsigned int length)
 {

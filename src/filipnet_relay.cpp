@@ -1,15 +1,34 @@
 #include "filipnet_relay.h"
 
-Relay::Relay(const int pin, char mqtt){
+Relay::Relay(char description, int pin, char mqtt){
     pinMode(pin, OUTPUT);
+    _description = description;
     _pin = pin;
     _mqtt = mqtt;
 }
 
 void Relay::ON(){
-    digitalWrite(_pin, HIGH);
+      Serial.print("Switch on ");
+      Serial.println(_description);
+      digitalWrite(_pin, HIGH);
+      int pinStatus = digitalRead(_pin);
+      Serial.print("Status of GPIO pin ");
+      Serial.print(_pin);
+      Serial.print(" is ");
+      Serial.println(pinStatus);
+      //client.publish(_mqtt+"/response", "on");
+      delay(1000);
 }
 
 void Relay::OFF(){
-    digitalWrite(_pin, LOW);
+      Serial.print("Switch on ");
+      Serial.println(_description);
+      digitalWrite(_pin, LOW);
+      int pinStatus = digitalRead(_pin);
+      Serial.print("Status of GPIO pin ");
+      Serial.print(_pin);
+      Serial.print(" is ");
+      Serial.println(pinStatus);
+      //client.publish(_mqtt+"/response", "off");
+      delay(1000);
 }
