@@ -7,6 +7,7 @@
 #include <Adafruit_BME280.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include "filipnet_relay.h"
 #include "credentials.h"
 #include "config.h"
 
