@@ -22,7 +22,7 @@ void Relay::ON(){
 }
 
 void Relay::OFF(){
-      Serial.print("Switch on ");
+      Serial.print("Switch off ");
       Serial.println(_description);
       digitalWrite(_pin, LOW);
       int pinStatus = digitalRead(_pin);
