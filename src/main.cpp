@@ -19,10 +19,6 @@ const int mqttPort = MQTT_PORT;
 const char *mqttUser = MQTT_USERNAME;
 const char *mqttPassword = MQTT_PASSWORD;
 const char *mqttID = MQTT_ID;
-//const int relayNightlight = RELAY_NIGHTLIGHT;
-//const int relayDaylight = RELAY_DAYLIGHT;
-//const int relayAirpump = RELAY_AIRPUMP;
-//const int relayFilter = RELAY_FILTER;
 
 unsigned long sensor_previousMillis = 0;
 const long sensor_interval = SENSOR_INTERVALL;
@@ -42,6 +38,7 @@ Adafruit_BME280 bme;                                 // Declaration of BME280 se
 WiFiClientSecure espClient;
 PubSubClient client(espClient);
 
+// Create relay instances by library filipnet_relay
 Relay Daylight("Aquarium Daylight", RELAY_DAYLIGHT, "home/indoor/aquarium/daylight");
 Relay Nightlight("Aquarium Nightlight", RELAY_NIGHTLIGHT, "home/indoor/aquarium/nightlight");
 Relay Airpump("Aquarium Airpump", RELAY_AIRPUMP, "home/indoor/aquarium/airpump");
@@ -59,144 +56,30 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
 
   if (mqttTopic == "home/indoor/aquarium/nightlight")
   {
-    if (mqttPayload == "on")
-    {
-      /* Serial.println("Switch on aquarium nightlight");
-      digitalWrite(relayNightlight, HIGH);
-      int pinStatus = digitalRead(relayNightlight);
-      Serial.print("Status of GPIO pin ");
-      Serial.print(relayNightlight);
-      Serial.print(" is ");
-      Serial.println(pinStatus);
-      client.publish("home/indoor/aquarium/nightlight/response", "on");
-      delay(1000); */
-    }
-    else if (mqttPayload == "off")
-    {
-      /*
-      Serial.println("Switch off aquarium nightlight");
-      digitalWrite(relayNightlight, LOW);
-      int pinStatus = digitalRead(relayNightlight);
-      Serial.print("Status of GPIO pin ");
-      Serial.print(relayNightlight);
-      Serial.print(" is ");
-      Serial.println(pinStatus);
-      client.publish("home/indoor/aquarium/nightlight/response", "off");
-      delay(1000);
-      */
-    }
-    else
-    {
-      Serial.println("No valid mqtt command");
-    }
+    if (mqttPayload == "on") { Nightlight.ON(); }
+    else if (mqttPayload == "off") { Nightlight.OFF(); }
+    else { Serial.println("No valid mqtt command"); }
   }
 
   else if (mqttTopic == "home/indoor/aquarium/daylight")
   {
-    if (mqttPayload == "on")
-    {
-      /*
-      Serial.println("Switch on aquarium daylight");
-      digitalWrite(relayDaylight, HIGH);
-      int pinStatus = digitalRead(relayDaylight);
-      Serial.print("Status of GPIO pin ");
-      Serial.print(relayDaylight);
-      Serial.print(" is ");
-      Serial.println(pinStatus);
-      client.publish("home/indoor/aquarium/daylight/response", "on");
-      delay(1000);
-      */
-    }
-    else if (mqttPayload == "off")
-    {
-      /*
-      Serial.println("Switch off daylight");
-      digitalWrite(relayDaylight, LOW);
-      int pinStatus = digitalRead(relayDaylight);
-      Serial.print("Status of GPIO pin ");
-      Serial.print(relayDaylight);
-      Serial.print(" is ");
-      Serial.println(pinStatus);
-      client.publish("home/indoor/aquarium/daylight/response", "off");
-      delay(1000);
-      */
-    }
-    else
-    {
-      Serial.println("No valid mqtt command");
-    }
+    if (mqttPayload == "on") { Daylight.ON(); }
+    else if (mqttPayload == "off") { Daylight.OFF(); }
+    else { Serial.println("No valid mqtt command"); }
   }
 
   else if (mqttTopic == "home/indoor/aquarium/airpump")
   {
-    if (mqttPayload == "on")
-    {
-      /*
-      Serial.println("Switch on aquarium airpump");
-      digitalWrite(relayAirpump, HIGH);
-      int pinStatus = digitalRead(relayAirpump);
-      Serial.print("Status of GPIO pin ");
-      Serial.print(relayAirpump);
-      Serial.print(" is ");
-      Serial.println(pinStatus);
-      client.publish("home/indoor/aquarium/airpump/response", "on");
-      delay(1000);
-      */
-    }
-    else if (mqttPayload == "off")
-    {
-      /*
-      Serial.println("Switch off airpump");
-      digitalWrite(relayAirpump, LOW);
-      int pinStatus = digitalRead(relayAirpump);
-      Serial.print("Status of GPIO pin ");
-      Serial.print(relayAirpump);
-      Serial.print(" is ");
-      Serial.println(pinStatus);
-      client.publish("home/indoor/aquarium/airpump/response", "off");
-      delay(1000);
-      */
-    }
-    else
-    {
-      Serial.println("No valid mqtt command");
-    }
+    if (mqttPayload == "on") { Airpump.ON(); }
+    else if (mqttPayload == "off") { Airpump.OFF(); }
+    else { Serial.println("No valid mqtt command"); }
   }
 
   else if (mqttTopic == "home/indoor/aquarium/filter")
   {
-    if (mqttPayload == "on")
-    {
-      /*
-      Serial.println("Switch on aquarium filter");
-      digitalWrite(relayFilter, HIGH);
-      int pinStatus = digitalRead(relayFilter);
-      Serial.print("Status of GPIO pin ");
-      Serial.print(relayFilter);
-      Serial.print(" is ");
-      Serial.println(pinStatus);
-      client.publish("home/indoor/aquarium/filter/response", "on");
-      delay(1000);
-      */
-    }
-    else if (mqttPayload == "off")
-    {
-      /*
-      Serial.println("Switch off filter");
-      digitalWrite(relayFilter, LOW);
-      int pinStatus = digitalRead(relayFilter);
-      Serial.print("Status of GPIO pin ");
-      Serial.print(relayFilter);
-      Serial.print(" is ");
-      Serial.println(pinStatus);
-      client.publish("home/indoor/aquarium/filter/response", "off");
-      delay(1000);
-      */
-    }
-    else
-    {
-      Serial.println("No valid mqtt command");
-    }
+    if (mqttPayload == "on") { Filter.ON(); }
+    else if (mqttPayload == "off") { Filter.OFF(); }
+    else { Serial.println("No valid mqtt command"); }
   }
   Serial.println("");
 }
