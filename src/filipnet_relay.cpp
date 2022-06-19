@@ -1,10 +1,11 @@
 #include "filipnet_relay.h"
 
-Relay::Relay(char description, int pin, char mqtt){
-    pinMode(pin, OUTPUT);
-    _description = description;
-    _pin = pin;
-    _mqtt = mqtt;
+Relay::Relay(String description, int pin, String mqtt){
+      digitalWrite(pin, HIGH);
+      pinMode(pin, OUTPUT);
+      _description = description;
+      _pin = pin;
+      _mqtt = mqtt;
 }
 
 void Relay::ON(){

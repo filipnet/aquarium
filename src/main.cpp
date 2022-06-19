@@ -19,10 +19,10 @@ const int mqttPort = MQTT_PORT;
 const char *mqttUser = MQTT_USERNAME;
 const char *mqttPassword = MQTT_PASSWORD;
 const char *mqttID = MQTT_ID;
-const int relayNightlight = RELAY_NIGHTLIGHT;
-const int relayDaylight = RELAY_DAYLIGHT;
-const int relayAirpump = RELAY_AIRPUMP;
-const int relayFilter = RELAY_FILTER;
+//const int relayNightlight = RELAY_NIGHTLIGHT;
+//const int relayDaylight = RELAY_DAYLIGHT;
+//const int relayAirpump = RELAY_AIRPUMP;
+//const int relayFilter = RELAY_FILTER;
 
 unsigned long sensor_previousMillis = 0;
 const long sensor_interval = SENSOR_INTERVALL;
@@ -42,10 +42,10 @@ Adafruit_BME280 bme;                                 // Declaration of BME280 se
 WiFiClientSecure espClient;
 PubSubClient client(espClient);
 
-Relay Daylight("Aquarium Daylight", relayDaylight, "home/indoor/aquarium/daylight");
-//Relay Daylight("relayDaylight","home/aquarium/nightlight");
-//Relay Airpump(RELAY_AIRPUMP,"home/aquarium/airpump");
-//Relay Daylight(RELAY_DAYLIGHT,"home/aquarium/filter");
+Relay Daylight("Aquarium Daylight", RELAY_DAYLIGHT, "home/indoor/aquarium/daylight");
+Relay Nightlight("Aquarium Nightlight", RELAY_NIGHTLIGHT, "home/indoor/aquarium/nightlight");
+Relay Airpump("Aquarium Airpump", RELAY_AIRPUMP, "home/indoor/aquarium/airpump");
+Relay Filter("Aquarium Filter", RELAY_FILTER, "home/indoor/aquarium/filter");
 
 void setRelayStatus(char *topic, byte *payload, unsigned int length)
 {
@@ -61,7 +61,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
   {
     if (mqttPayload == "on")
     {
-      Serial.println("Switch on aquarium nightlight");
+      /* Serial.println("Switch on aquarium nightlight");
       digitalWrite(relayNightlight, HIGH);
       int pinStatus = digitalRead(relayNightlight);
       Serial.print("Status of GPIO pin ");
@@ -69,10 +69,11 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
       Serial.print(" is ");
       Serial.println(pinStatus);
       client.publish("home/indoor/aquarium/nightlight/response", "on");
-      delay(1000);
+      delay(1000); */
     }
     else if (mqttPayload == "off")
     {
+      /*
       Serial.println("Switch off aquarium nightlight");
       digitalWrite(relayNightlight, LOW);
       int pinStatus = digitalRead(relayNightlight);
@@ -82,6 +83,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
       Serial.println(pinStatus);
       client.publish("home/indoor/aquarium/nightlight/response", "off");
       delay(1000);
+      */
     }
     else
     {
@@ -93,6 +95,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
   {
     if (mqttPayload == "on")
     {
+      /*
       Serial.println("Switch on aquarium daylight");
       digitalWrite(relayDaylight, HIGH);
       int pinStatus = digitalRead(relayDaylight);
@@ -102,9 +105,11 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
       Serial.println(pinStatus);
       client.publish("home/indoor/aquarium/daylight/response", "on");
       delay(1000);
+      */
     }
     else if (mqttPayload == "off")
     {
+      /*
       Serial.println("Switch off daylight");
       digitalWrite(relayDaylight, LOW);
       int pinStatus = digitalRead(relayDaylight);
@@ -114,6 +119,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
       Serial.println(pinStatus);
       client.publish("home/indoor/aquarium/daylight/response", "off");
       delay(1000);
+      */
     }
     else
     {
@@ -125,6 +131,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
   {
     if (mqttPayload == "on")
     {
+      /*
       Serial.println("Switch on aquarium airpump");
       digitalWrite(relayAirpump, HIGH);
       int pinStatus = digitalRead(relayAirpump);
@@ -134,9 +141,11 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
       Serial.println(pinStatus);
       client.publish("home/indoor/aquarium/airpump/response", "on");
       delay(1000);
+      */
     }
     else if (mqttPayload == "off")
     {
+      /*
       Serial.println("Switch off airpump");
       digitalWrite(relayAirpump, LOW);
       int pinStatus = digitalRead(relayAirpump);
@@ -146,6 +155,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
       Serial.println(pinStatus);
       client.publish("home/indoor/aquarium/airpump/response", "off");
       delay(1000);
+      */
     }
     else
     {
@@ -157,6 +167,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
   {
     if (mqttPayload == "on")
     {
+      /*
       Serial.println("Switch on aquarium filter");
       digitalWrite(relayFilter, HIGH);
       int pinStatus = digitalRead(relayFilter);
@@ -166,9 +177,11 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
       Serial.println(pinStatus);
       client.publish("home/indoor/aquarium/filter/response", "on");
       delay(1000);
+      */
     }
     else if (mqttPayload == "off")
     {
+      /*
       Serial.println("Switch off filter");
       digitalWrite(relayFilter, LOW);
       int pinStatus = digitalRead(relayFilter);
@@ -178,6 +191,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
       Serial.println(pinStatus);
       client.publish("home/indoor/aquarium/filter/response", "off");
       delay(1000);
+      */
     }
     else
     {
@@ -273,7 +287,7 @@ void reconnect()
         Serial.print("TLS connection failed with state: ");
         Serial.println(puffer);
         Serial.println("");
-        digitalWrite(relayNightlight, HIGH);
+        //digitalWrite(relayNightlight, HIGH);
         delay(4000);
       }
     }
@@ -415,14 +429,14 @@ void setup()
   Serial.setDebugOutput(false);
   pinMode(LED_BUILTIN, OUTPUT);
   // Turn off relay-ports on startup
-  digitalWrite(relayNightlight, HIGH);
-  pinMode(relayNightlight, OUTPUT);
-  digitalWrite(relayDaylight, HIGH);
-  pinMode(relayDaylight, OUTPUT);
-  digitalWrite(relayAirpump, HIGH);
-  pinMode(relayAirpump, OUTPUT);
-  digitalWrite(relayFilter, HIGH);
-  pinMode(relayFilter, OUTPUT);
+  //digitalWrite(relayNightlight, HIGH);
+  //pinMode(relayNightlight, OUTPUT);
+  //digitalWrite(relayDaylight, HIGH);
+  //pinMode(relayDaylight, OUTPUT);
+  ///digitalWrite(relayAirpump, HIGH);
+  //pinMode(relayAirpump, OUTPUT);
+  //digitalWrite(relayFilter, HIGH);
+  //pinMode(relayFilter, OUTPUT);
   espClient.setInsecure();
   I2CAddressFinder();
   initialize_bme280();

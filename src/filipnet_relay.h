@@ -4,11 +4,11 @@
 
 class Relay {
     private:
-        char _description;
+        String _description;
         int _pin;
-        char _mqtt;
+        String _mqtt;
     public:
-        Relay(const char description, const int pin, const char mqtt);
+        Relay(String description, const int pin, String mqtt);
         void ON();
         void OFF();
 };
