@@ -18,6 +18,7 @@ Control of aquarium technology and sensors
 
 - [Aquarium](#aquarium)
     - [FEATURES](#features)
+    - [LAST UPDATES](#last-updates)
     - [REQUIREMENTS](#requirements)
         - [HARDWARE](#hardware)
         - [PROPOSAL FOR A HOUSING](#proposal-for-a-housing)
@@ -28,6 +29,12 @@ Control of aquarium technology and sensors
     - [LICENSE](#license)
 
 <!-- /TOC -->
+
+## LAST UPDATES
+
+- Translation from INO to CPP source code
+- For uniqueness analogous to espClient renaming of instance ```client``` to ```mqttClient```
+- Relay functions are stored in a library filipnet-relay
 
 ## REQUIREMENTS
 

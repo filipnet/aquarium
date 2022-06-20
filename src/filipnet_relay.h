@@ -9,6 +9,7 @@ class Relay {
         String _mqtt;
     public:
         Relay(String description, const int pin, String mqtt);
+        void MQTT();
         void ON();
         void OFF();
 };

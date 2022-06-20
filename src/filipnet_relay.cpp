@@ -8,6 +8,11 @@ Relay::Relay(String description, int pin, String mqtt){
       _mqtt = mqtt;
 }
 
+//void Relay::MQTT(){
+//      mqttClient.loop();
+//      delay(1);
+//}
+
 void Relay::ON(){
       Serial.print("Switch on ");
       Serial.println(_description);
@@ -17,7 +22,7 @@ void Relay::ON(){
       Serial.print(_pin);
       Serial.print(" is ");
       Serial.println(pinStatus);
-      //client.publish(_mqtt+"/response", "on");
+      //mqttClient.publish(_mqtt+"/response", "on");
       delay(1000);
 }
 
@@ -30,6 +35,6 @@ void Relay::OFF(){
       Serial.print(_pin);
       Serial.print(" is ");
       Serial.println(pinStatus);
-      //client.publish(_mqtt+"/response", "off");
+      //mqttClient.publish(_mqtt+"/response", "off");
       delay(1000);
 }
