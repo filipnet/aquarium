@@ -35,8 +35,8 @@ DallasTemperature sensors(&oneWire);                 // Pass our oneWire referen
 DeviceAddress insideThermometer, outsideThermometer; // arrays to hold device addresses
 Adafruit_BME280 bme;                                 // Declaration of BME280 sensor
 
-WiFiClientSecure espClient;
-PubSubClient mqttClient(espClient);
+WiFiClientSecure WiFiClient;
+PubSubClient MQTTClient(WiFiClient);
 
 // Create relay instances by library filipnet_relay
 Relay Daylight("Aquarium Daylight", RELAY_DAYLIGHT, "home/indoor/aquarium/daylight");
@@ -100,7 +100,7 @@ void callback(char *topic, byte *payload, unsigned int length)
 
 void reconnect()
 {
-  while (!mqttClient.connected())
+  while (!MQTTClient.connected())
   {
     WiFi.mode(WIFI_STA);
     WiFi.hostname(hostname);
@@ -134,8 +134,8 @@ void reconnect()
     Serial.println("");
 
     // https://pubsubclient.knolleary.net/api.html
-    mqttClient.setServer(mqttServer, mqttPort);
-    mqttClient.setCallback(callback);
+    MQTTClient.setServer(mqttServer, mqttPort);
+    MQTTClient.setCallback(callback);
     Serial.println("Connecting to MQTT broker");
     Serial.print("  MQTT Server: ");
     Serial.println(mqttServer);
@@ -147,26 +147,26 @@ void reconnect()
     Serial.println(mqttID);
     Serial.println("");
 
-    while (!mqttClient.connected())
+    while (!MQTTClient.connected())
     {
-      if (mqttClient.connect(mqttID, mqttUser, mqttPassword))
+      if (MQTTClient.connect(mqttID, mqttUser, mqttPassword))
       {
         Serial.println("Connected to MQTT broker");
         Serial.println("Subscribe MQTT Topics");
         // Subscribe the following mqtt topics
-        mqttClient.subscribe("home/indoor/aquarium/daylight");
-        mqttClient.subscribe("home/indoor/aquarium/nightlight");
-        mqttClient.subscribe("home/indoor/aquarium/airpump");
-        mqttClient.subscribe("home/indoor/aquarium/filter");
+        MQTTClient.subscribe("home/indoor/aquarium/daylight");
+        MQTTClient.subscribe("home/indoor/aquarium/nightlight");
+        MQTTClient.subscribe("home/indoor/aquarium/airpump");
+        MQTTClient.subscribe("home/indoor/aquarium/filter");
         Serial.println("");
         digitalWrite(LED_BUILTIN, HIGH);
       }
       else
       {
         Serial.print("Connection to MQTT broker failed with state: ");
-        Serial.println(mqttClient.state());
+        Serial.println(MQTTClient.state());
         char puffer[100];
-        espClient.getLastSSLError(puffer, sizeof(puffer));
+        WiFiClient.getLastSSLError(puffer, sizeof(puffer));
         Serial.print("TLS connection failed with state: ");
         Serial.println(puffer);
         Serial.println("");
@@ -179,14 +179,14 @@ void reconnect()
 // Function to receive MQTT messages
 void mqttloop()
 {
-  if (!mqttClient.loop())
-    mqttClient.connect(mqttID);
+  if (!MQTTClient.loop())
+    MQTTClient.connect(mqttID);
 }
 
 // Function to send MQTT messages
 void mqttsend(const char *_topic, const char *_data)
 {
-  mqttClient.publish(_topic, _data);
+  MQTTClient.publish(_topic, _data);
 }
 
 void heartbeat()
@@ -197,7 +197,7 @@ void heartbeat()
     heartbeat_previousMillis = heartbeat_currentMillis;
     Serial.println("Send heartbeat signal to MQTT broker");
     Serial.println("");
-    mqttClient.publish("home/indoor/aquarium/heartbeat", "on");
+    MQTTClient.publish("home/indoor/aquarium/heartbeat", "on");
   }
 }
 
@@ -252,7 +252,7 @@ void readsensor_bme280()
   dtostrf(temperature_local, 1, 2, temperature_local_char);
   Serial.print("  MQTT publish home/indoor/aquarium/temperature: ");
   Serial.println(temperature_local_char);
-  mqttClient.publish("home/indoor/aquarium/temperature", temperature_local_char, true);
+  MQTTClient.publish("home/indoor/aquarium/temperature", temperature_local_char, true);
   delay(100);
 
   humidity_local = bme.readHumidity();
@@ -263,7 +263,7 @@ void readsensor_bme280()
   dtostrf(humidity_local, 1, 2, humidity_local_char);
   Serial.print("  MQTT publish home/indoor/aquarium/humidity: ");
   Serial.println(humidity_local_char);
-  mqttClient.publish("home/indoor/aquarium/humidity", humidity_local_char, true);
+  MQTTClient.publish("home/indoor/aquarium/humidity", humidity_local_char, true);
   delay(100);
 
   pressure_local = (bme.readPressure() / 100.0F);
@@ -274,7 +274,7 @@ void readsensor_bme280()
   dtostrf(pressure_local, 1, 2, pressure_local_char);
   Serial.print("  MQTT publish home/indoor/aquarium/pressure: ");
   Serial.println(pressure_local_char);
-  mqttClient.publish("home/indoor/aquarium/pressure", pressure_local_char, true); // Pressure (hPa)
+  MQTTClient.publish("home/indoor/aquarium/pressure", pressure_local_char, true); // Pressure (hPa)
   delay(100);
 }
 
@@ -289,7 +289,7 @@ void readsensor_ds18b20()
   dtostrf(watertemperature_local, 1, 2, watertemperature_local_char);
   Serial.print("  MQTT publish home/indoor/aquarium/watertemperature: ");
   Serial.println(watertemperature_local_char);
-  mqttClient.publish("home/indoor/aquarium/watertemperature", watertemperature_local_char, true);
+  MQTTClient.publish("home/indoor/aquarium/watertemperature", watertemperature_local_char, true);
   delay(100);
 }
 
@@ -310,7 +310,7 @@ void setup()
   Serial.begin(115200);
   Serial.setDebugOutput(false);
   pinMode(LED_BUILTIN, OUTPUT);
-  espClient.setInsecure();
+  WiFiClient.setInsecure();
   I2CAddressFinder();
   initialize_bme280();
   sensors.begin(); // DS18B20
@@ -319,7 +319,7 @@ void setup()
 
 void loop()
 {
-  mqttClient.loop();
+  MQTTClient.loop();
   reconnect();
   sensor();
   heartbeat();
