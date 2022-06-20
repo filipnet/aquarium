@@ -1,9 +1,5 @@
 #include "filipnet_relay.h"
 
-#include <ESP8266WiFi.h>
-#include <WiFiClientSecure.h>
-#include <PubSubClient.h>
-
 /* Troubleshooting custom class inheriting from PubSubClient
 https://hobbytronics.com.pk/arduino-custom-library-and-pubsubclient-call-back/
 https://github.com/knolleary/pubsubclient/issues/300
@@ -28,7 +24,7 @@ void Relay::ON(){
       Serial.print(_pin);
       Serial.print(" is ");
       Serial.println(pinStatus);
-      //MQTTClient.publish(_mqtt+"/response", "on");
+      MQTTClient.publish(_mqtt+"/response", "on");
       delay(1000);
 }
 
