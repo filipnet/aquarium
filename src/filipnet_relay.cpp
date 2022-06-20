@@ -1,6 +1,17 @@
 #include "filipnet_relay.h"
 
+#include <ESP8266WiFi.h>
+#include <WiFiClientSecure.h>
+#include <PubSubClient.h>
+
+/* Troubleshooting custom class inheriting from PubSubClient
+https://hobbytronics.com.pk/arduino-custom-library-and-pubsubclient-call-back/
+https://github.com/knolleary/pubsubclient/issues/300
+https://github.com/xluthi/pubsubclient/blob/master/examples/mqtt_inheritance/mqtt_inheritance.ino
+*/
+
 Relay::Relay(String description, int pin, String mqtt){
+      //MQTTClient.setCallback([this] (char* topic, byte* payload, unsigned int length) { this->callback(topic, payload, length); });
       digitalWrite(pin, HIGH);
       pinMode(pin, OUTPUT);
       _description = description;
