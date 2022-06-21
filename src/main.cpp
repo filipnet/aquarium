@@ -3,9 +3,6 @@
 #define MQTT_MAX_PACKET_SIZE 256
 #include <WiFiClientSecure.h>
 #include <ESP8266mDNS.h>
-#include <ESPAsyncTCP.h>
-#include <ESPAsyncWebServer.h>
-#include <AsyncElegantOTA.h>
 #include <PubSubClient.h>
 #include <Adafruit_BME280.h>
 #include <OneWire.h>
@@ -42,19 +39,6 @@ Adafruit_BME280 bme;                                 // Declaration of BME280 se
 
 WiFiClientSecure WiFiClient;
 PubSubClient MQTTClient(WiFiClient);
-
-AsyncWebServer server(80);
-
-void initialize_ota()
-{
-  Serial.print("Initialize AsyncWebServer for updates OTA: ");
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(200, "text/plain", "This is a simple text message sent from ESP8266.");
-  });
-  AsyncElegantOTA.begin(&server, otaUser, otaPassword); 
-  server.begin();
-  Serial.println("HTTP server started");
-}
 
 // Create relay instances by library filipnet_relay
 Relay Daylight("Aquarium Daylight", RELAY_DAYLIGHT, "home/indoor/aquarium/daylight");
@@ -331,7 +315,6 @@ void setup()
   WiFiClient.setInsecure();
   I2CAddressFinder();
   initialize_bme280();
-  initialize_ota();
   sensors.begin(); // DS18B20
   reconnect();
 }
