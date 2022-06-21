@@ -19,8 +19,6 @@ const int mqttPort = MQTT_PORT;
 const char *mqttUser = MQTT_USERNAME;
 const char *mqttPassword = MQTT_PASSWORD;
 const char *mqttID = MQTT_ID;
-const char *otaUser = OTA_USERNAME;
-const char *otaPassword = OTA_PASSWORD;
 
 unsigned long sensor_previousMillis = 0;
 const long sensor_interval = SENSOR_INTERVALL;
