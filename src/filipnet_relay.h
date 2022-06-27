@@ -15,6 +15,7 @@ class Relay {
         void MQTT();
         void ON();
         void OFF();
+        void STATUS();
 };
 
 #endif

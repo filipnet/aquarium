@@ -19,19 +19,17 @@ void Relay::ON(){
       Serial.print("Switch on ");
       Serial.println(_description);
       digitalWrite(_pin, HIGH);
-      int pinStatus = digitalRead(_pin);
-      Serial.print("Status of GPIO pin ");
-      Serial.print(_pin);
-      Serial.print(" is ");
-      Serial.println(pinStatus);
-      //MQTTClient.publish(_mqtt+"/response", "on");
-      delay(1000);
+      Relay::STATUS();
 }
 
 void Relay::OFF(){
       Serial.print("Switch off ");
       Serial.println(_description);
       digitalWrite(_pin, LOW);
+      Relay::STATUS();
+}
+
+void Relay::STATUS(){
       int pinStatus = digitalRead(_pin);
       Serial.print("Status of GPIO pin ");
       Serial.print(_pin);
