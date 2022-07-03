@@ -30,7 +30,7 @@ float pressure_local;
 float watertemperature_local;
 
 // Data wire is plugged into port D7 on the Arduino
-OneWire oneWire(WATERTEMP_SENSOR);                   // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
+OneWire oneWire(WATERTEMP_SENSOR_PIN);                   // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 DallasTemperature sensors(&oneWire);                 // Pass our oneWire reference to Dallas Temperature.
 DeviceAddress insideThermometer, outsideThermometer; // arrays to hold device addresses
 Adafruit_BME280 bme;                                 // Declaration of BME280 sensor
@@ -39,10 +39,10 @@ WiFiClientSecure WiFiClient;
 PubSubClient MQTTClient(WiFiClient);
 
 // Create relay instances by library filipnet_relay
-Relay Daylight("Aquarium Daylight", RELAY_DAYLIGHT, "home/indoor/aquarium/daylight");
-Relay Nightlight("Aquarium Nightlight", RELAY_NIGHTLIGHT, "home/indoor/aquarium/nightlight");
-Relay Airpump("Aquarium Airpump", RELAY_AIRPUMP, "home/indoor/aquarium/airpump");
-Relay Filter("Aquarium Filter", RELAY_FILTER, "home/indoor/aquarium/filter");
+Relay Daylight("Aquarium Daylight", RELAY_DAYLIGHT_PIN, RELAY_DAYLIGHT_CONTACT, "home/indoor/aquarium/daylight");
+Relay Nightlight("Aquarium Nightlight", RELAY_NIGHTLIGHT_PIN, RELAY_DAYLIGHT_CONTACT, "home/indoor/aquarium/nightlight");
+Relay Airpump("Aquarium Airpump", RELAY_AIRPUMP_PIN, RELAY_DAYLIGHT_CONTACT, "home/indoor/aquarium/airpump");
+Relay Filter("Aquarium Filter", RELAY_FILTER_PIN, RELAY_DAYLIGHT_CONTACT, "home/indoor/aquarium/filter");
 
 void setRelayStatus(char *topic, byte *payload, unsigned int length)
 {
@@ -59,6 +59,8 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
     if (mqttPayload == "on") { Nightlight.ON(); }
     else if (mqttPayload == "off") { Nightlight.OFF(); }
     else { Serial.println("No valid mqtt command"); }
+    mqttResponse = Nightlight._mqtt+"/response";
+    MQTTClient.publish(mqttResponse, "off");
   }
 
   else if (mqttTopic == "home/indoor/aquarium/daylight")

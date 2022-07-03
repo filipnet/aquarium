@@ -26,6 +26,8 @@ Control of aquarium technology and sensors
     - [INSTALL AND USAGE](#install-and-usage)
         - [PINOUT](#pinout)
         - [MQTT TOPICS](#mqtt-topics)
+    - [OPEN ISSUES](#open-issues)
+    - [Troubleshooting custom class inheriting from PubSubClient](#troubleshooting-custom-class-inheriting-from-pubsubclient)
     - [LICENSE](#license)
 
 <!-- /TOC -->
@@ -114,6 +116,13 @@ Below are a few examples of the case for the project as a suggestion.
 | home/outdoor/aquarium/heartbeat | Heartbeat for troubleshooting | on |
 
 * I do not use the Arduino for switching the filter. Since this runs 365 days a year 24h a week and is only switched off during the weekly water change and cleaning, it hangs directly on the power. In the code I have provided it only as a placeholder of the quattro relay.
+
+## OPEN ISSUES
+
+## Troubleshooting custom class inheriting from PubSubClient
+- https://hobbytronics.com.pk/arduino-custom-library-and-pubsubclient-call-back/
+- https://github.com/knolleary/pubsubclient/issues/300
+- https://github.com/xluthi/pubsubclient/blob/master/examples/mqtt_inheritance/mqtt_inheritance.ino
 
 ## LICENSE
 

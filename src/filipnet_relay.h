@@ -1,20 +1,21 @@
 #ifndef FILIPNET_RELAY_H
 #define FILIPNET_RELAY_H
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
-#include <WiFiClientSecure.h>
-#include <PubSubClient.h>
 
 class Relay {
     private:
         String _description;
         int _pin;
-        String _mqtt;
+        String _contact;
+        // Definition of contact status "Normal Open" (NO)
+        int onSignal = LOW;
+		int offSignal = HIGH;
     public:
-        Relay(String description, const int pin, String mqtt);
-        void MQTT();
+        const char* _mqtt;
+        Relay(String description, const int pin, String contact, const char* mqtt);
         void ON();
         void OFF();
+        void INVERT();
         void STATUS();
 };
 
