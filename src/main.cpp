@@ -59,10 +59,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
     if (mqttPayload == "on") { Nightlight.ON(); }
     else if (mqttPayload == "off") { Nightlight.OFF(); }
     else { Serial.println("No valid mqtt command"); }
-    String mqttTopic = Nightlight.MQTT();
-    mqttTopic.concat("/response");
-    const char * mqttTopicResponse = mqttTopic.c_str();
-    MQTTClient.publish(mqttTopicResponse, "off");
+    MQTTClient.publish(Nightlight.MQTTTOPIC(), Nightlight.MQTTSTATE());
   }
 
   else if (mqttTopic == "home/indoor/aquarium/daylight")

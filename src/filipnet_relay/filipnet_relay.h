@@ -7,17 +7,18 @@ class Relay {
         String _description;
         int _pin;
         String _contact;
+        const char* _mqtt;
         // Definition of contact status "Normal Open" (NO)
         int onSignal = LOW;
 		int offSignal = HIGH;
     public:
-        const char* _mqtt;
         Relay(String description, const int pin, String contact, const char* mqtt);
         void ON();
         void OFF();
         void INVERT();
         void STATE();
-        const char* MQTT();
+        const char* MQTTTOPIC();
+        const char* MQTTSTATE();
 };
 
 #endif
