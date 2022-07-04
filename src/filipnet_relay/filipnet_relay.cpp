@@ -25,9 +25,9 @@ void Relay::OFF(){
 }
 
 void Relay::INVERT() {
-  const int tempSignal = this->onSignal;
-  this->onSignal = this->offSignal;
-  this->offSignal = tempSignal;
+      const int tempSignal = this->onSignal;
+      this->onSignal = this->offSignal;
+      this->offSignal = tempSignal;
 }
 
 void Relay::STATE(){
