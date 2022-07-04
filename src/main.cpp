@@ -7,7 +7,7 @@
 #include <Adafruit_BME280.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#include "filipnet_relay.h"
+#include "filipnet_relay/filipnet_relay.h"
 #include "credentials.h"
 #include "config.h"
 
@@ -59,8 +59,7 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
     if (mqttPayload == "on") { Nightlight.ON(); }
     else if (mqttPayload == "off") { Nightlight.OFF(); }
     else { Serial.println("No valid mqtt command"); }
-    mqttResponse = Nightlight._mqtt+"/response";
-    MQTTClient.publish(mqttResponse, "off");
+    //MQTTClient.publish(mqttResponse, "off");
   }
 
   else if (mqttTopic == "home/indoor/aquarium/daylight")

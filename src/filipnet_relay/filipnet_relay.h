@@ -16,7 +16,7 @@ class Relay {
         void ON();
         void OFF();
         void INVERT();
-        void STATUS();
+        void STATE();
 };
 
 #endif

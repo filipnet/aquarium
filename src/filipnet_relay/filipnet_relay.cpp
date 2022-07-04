@@ -14,14 +14,14 @@ void Relay::ON(){
       Serial.print("Switch on ");
       Serial.println(_description);
       digitalWrite(_pin, onSignal);
-      Relay::STATUS();
+      Relay::STATE();
 }
 
 void Relay::OFF(){
       Serial.print("Switch off ");
       Serial.println(_description);
       digitalWrite(_pin, offSignal);
-      Relay::STATUS();
+      Relay::STATE();
 }
 
 void Relay::INVERT() {
@@ -30,7 +30,7 @@ void Relay::INVERT() {
   this->offSignal = tempSignal;
 }
 
-void Relay::STATUS(){
+void Relay::STATE(){
       int pinStatus = digitalRead(_pin);
       Serial.print("Status of GPIO pin ");
       Serial.print(_pin);
