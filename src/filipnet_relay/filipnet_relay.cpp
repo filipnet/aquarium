@@ -38,3 +38,7 @@ void Relay::STATE(){
       Serial.println(pinStatus);
       delay(1000);
 }
+
+const char* Relay::MQTT(){
+      return _mqtt;
+}

@@ -17,6 +17,7 @@ class Relay {
         void OFF();
         void INVERT();
         void STATE();
+        const char* MQTT();
 };
 
 #endif

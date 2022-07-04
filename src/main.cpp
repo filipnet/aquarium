@@ -59,7 +59,10 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
     if (mqttPayload == "on") { Nightlight.ON(); }
     else if (mqttPayload == "off") { Nightlight.OFF(); }
     else { Serial.println("No valid mqtt command"); }
-    //MQTTClient.publish(mqttResponse, "off");
+    //const char* response = "/response";
+    mqttTopic = Nightlight.MQTT();
+    Serial.println(mqttTopic);
+    //MQTTClient.publish(mqttTopic, "off");
   }
 
   else if (mqttTopic == "home/indoor/aquarium/daylight")
@@ -113,7 +116,7 @@ void reconnect()
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED)
     {
-      delay(500);
+      delay(50);
       Serial.print(".");
     }
     Serial.println();
@@ -137,27 +140,35 @@ void reconnect()
     // https://pubsubclient.knolleary.net/api.html
     MQTTClient.setServer(mqttServer, mqttPort);
     MQTTClient.setCallback(callback);
-    Serial.println("Connecting to MQTT broker");
-    Serial.print("  MQTT Server: ");
+    Serial.print("Connecting to MQTT broker: ");
     Serial.println(mqttServer);
-    Serial.print("  MQTT Port: ");
-    Serial.println(mqttPort);
-    Serial.print("  MQTT Username: ");
-    Serial.println(mqttUser);
-    Serial.print("  MQTT Identifier: ");
-    Serial.println(mqttID);
-    Serial.println("");
 
     while (!MQTTClient.connected())
     {
+      delay(50);
+      Serial.print(".");
       if (MQTTClient.connect(mqttID, mqttUser, mqttPassword))
       {
+        Serial.println();
         Serial.println("Connected to MQTT broker");
+        Serial.print("  MQTT Server: ");
+        Serial.println(mqttServer);
+        Serial.print("  MQTT Port: ");
+        Serial.println(mqttPort);
+        Serial.print("  MQTT Username: ");
+        Serial.println(mqttUser);
+        Serial.print("  MQTT Identifier: ");
+        Serial.println(mqttID);
+        Serial.println("");
         Serial.println("Subscribe MQTT Topics");
         // Subscribe the following mqtt topics
+        Serial.println("  home/indoor/aquarium/daylight");
         MQTTClient.subscribe("home/indoor/aquarium/daylight");
+        Serial.println("  home/indoor/aquarium/nightlight");
         MQTTClient.subscribe("home/indoor/aquarium/nightlight");
+        Serial.println("  home/indoor/aquarium/airpump");
         MQTTClient.subscribe("home/indoor/aquarium/airpump");
+        Serial.println("  home/indoor/aquarium/filter");
         MQTTClient.subscribe("home/indoor/aquarium/filter");
         Serial.println("");
         digitalWrite(LED_BUILTIN, HIGH);
