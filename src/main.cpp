@@ -59,7 +59,6 @@ void setRelayStatus(char *topic, byte *payload, unsigned int length)
     if (mqttPayload == "on") { Nightlight.ON(); }
     else if (mqttPayload == "off") { Nightlight.OFF(); }
     else { Serial.println("No valid mqtt command"); }
-    MQTTClient.publish(Nightlight.MQTTTOPIC(), Nightlight.MQTTSTATE());
   }
 
   else if (mqttTopic == "home/indoor/aquarium/daylight")
@@ -172,6 +171,7 @@ void reconnect()
       }
       else
       {
+        Serial.println();
         Serial.print("Connection to MQTT broker failed with state: ");
         Serial.println(MQTTClient.state());
         char puffer[100];
@@ -242,13 +242,7 @@ void initialize_bme280()
 {
   Serial.print("Initialize BME280 module: ");
   if (!bme.begin(I2C_ADDRESS_BME280))
-  {
-    Serial.println(F("BME280 allocation failed"));
-  }
-  else
-  {
-    Serial.println("OK");
-  }
+    { Serial.println(F("BME280 allocation failed")); } else { Serial.println("OK"); }
 }
 
 void readsensor_bme280()

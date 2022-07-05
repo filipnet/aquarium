@@ -38,16 +38,3 @@ void Relay::STATE(){
       Serial.println(pinStatus);
       delay(1000);
 }
-
-const char* Relay::MQTTTOPIC(){
-      String mqttTopic = _mqtt;
-      mqttTopic.concat("/response");
-      const char * mqttTopicResponse = mqttTopic.c_str();
-      return mqttTopicResponse;
-}
-
-const char* Relay::MQTTSTATE(){
-      int pinStatus = digitalRead(_pin);
-      char const* mqttState = pinStatus.c_str();
-      return mqttState;
-}
