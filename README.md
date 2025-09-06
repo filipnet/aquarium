@@ -2,6 +2,11 @@
 
 Control of aquarium technology and sensors
 
+> **⚠️ NOTE**  
+> This repository is no longer actively maintained.  
+> The complete logic has been rebuilt with ESPHome using the same hardware and sensors.  
+> For further information, please visit: [https://www.filipnet.de/esphome-smart-devices/](https://www.filipnet.de/esphome-smart-devices/)
+
 ## FEATURES
 <img src="images/mqtt-dash-example.jpg" alt="Telegram notification example" width="400" align="right" hspace="30" vspace="20"/>
 - Connects to the Wireless Access Point / Wifi Router
